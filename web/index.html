@@ -95,7 +95,7 @@ dialog input{width:100%;background:#0f0c09;border:1px solid var(--line);color:va
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#"><i></i>Imole</a>
-  <nav><a href="#meters">Meters</a><a href="#wall">Lit by</a><a href="#how">How it works</a><a href="#safety">Safety</a><a class="cta" href="#install">Install skill</a></nav>
+  <nav><a href="#meters">Meters</a><a href="#try">Try it</a><a href="#wall">Lit by</a><a href="#how">How it works</a><a href="#safety">Safety</a><a class="cta" href="#install">Install skill</a></nav>
 </div></header>
 
 <div class="hero"><div class="wrap">
@@ -145,10 +145,21 @@ dialog input{width:100%;background:#0f0c09;border:1px solid var(--line);color:va
   </div>
 </div></section>
 
+<section id="try"><div class="wrap">
+  <h2>Try it in 2 minutes</h2>
+  <p class="sub">No install needed. Works with Binance AI Pro or any agent that already has the Binance Agentic Wallet skill.</p>
+  <div class="steps">
+    <div class="step"><div class="n">01 · ONCE</div><h4>Get ready</h4><p>Claim your Agent ID in the Binance app (Wallet → Agent ID banner). Turn on <b>Developer Mode</b> (Agentic Wallet → Settings). Put about <b>0.3 USDT</b> and a little <b>BNB</b> for gas in your Agentic Wallet on BSC.</p></div>
+    <div class="step"><div class="n">02</div><h4>Copy a prompt</h4><p>Press <b>Sponsor this home</b> on any meter above. The prompt already contains the exact transactions: an approval for exactly your amount, then the sponsorship.</p></div>
+    <div class="step"><div class="n">03</div><h4>Paste, check, confirm</h4><p>Paste it to your agent. It shows the <span class="mono">baw</span> preview for each step and waits for your yes. Watch your <b>.ai</b> name appear on the Lit by wall.</p></div>
+  </div>
+  <div class="row" style="margin-top:20px"><button class="btn primary" id="quickSponsor">Sponsor onegeex.ai with 0.2 USDT</button></div>
+</div></section>
+
 <section id="install"><div class="wrap grid2">
   <div>
-    <h2>Give your agent the skill</h2>
-    <p class="sub">Works with Binance AI Pro, Claude Code, Cursor, Codex and any agent that has the Binance Agentic Wallet skill. You need an Agent ID and Developer Mode on (Agentic Wallet → Settings).</p>
+    <h2>Or give your agent the Imole skill</h2>
+    <p class="sub">For Claude Code, Cursor, Codex and other coding agents. The skill adds name lookups, quotes, balance checks and spending limits. You need an Agent ID and Developer Mode on (Agentic Wallet → Settings).</p>
     <pre class="code" id="c-install"><button class="btn small" data-copy="c-install">Copy</button>npx skills add binance/binance-skills-hub --skill binance-agentic-wallet
 npx skills add Onegeex/imoleagent-id --skill imole-energy</pre>
   </div>
@@ -163,7 +174,7 @@ npx skills add Onegeex/imoleagent-id --skill imole-energy</pre>
 
 <section id="safety"><div class="wrap">
   <h2>Safety, by design</h2>
-  <p class="sub">The contract is open source and verified. Here is exactly what it can and can't do.</p>
+  <p class="sub">The contract is open source on <a href="https://github.com/Onegeex/imoleagent-id">GitHub</a>. Here is exactly what it can and can't do.</p>
   <ul class="safety">
     <li>No owner, admin, pause, upgrade or mint function exists in ImoleGrid</li>
     <li>Escrowed USDT moves only against usage signed by the meter's own key</li>
@@ -184,9 +195,13 @@ npx skills add Onegeex/imoleagent-id --skill imole-energy</pre>
 
 <dialog id="dlg">
   <h3 style="margin:0 0 4px;font:700 20px Inter" id="dlgTitle">Prompt for your agent</h3>
-  <p style="color:var(--mute);margin:0;font-size:14px">Agentic Wallets act only through your AI agent. Copy this and paste it to your agent; you'll confirm in the Binance app.</p>
-  <label for="amt">Amount (USDT)</label><input id="amt" type="number" min="0.01" step="0.01" value="0.2">
+  <p style="color:var(--mute);margin:0;font-size:14px">Agentic Wallets act only through your AI agent. Copy a prompt and paste it to your agent; it shows you each preview and you confirm.</p>
+  <label for="amt">Amount (USDT)</label><input id="amt" type="number" min="0.05" max="50" step="0.05" value="0.2">
+  <div id="kwhOut" style="font-size:13px;color:var(--sun);margin-top:6px"></div>
+  <label>For Binance AI Pro or any agent with the Agentic Wallet skill (no install)</label>
   <pre class="code" id="c-dlg"><button class="btn small" data-copy="c-dlg">Copy</button></pre>
+  <label>If your agent has the Imole skill</label>
+  <pre class="code" id="c-dlg2"><button class="btn small" data-copy="c-dlg2">Copy</button></pre>
   <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn" onclick="dlg.close()">Close</button></div>
 </dialog>
 <div class="toast" id="toast">Copied</div>
@@ -270,7 +285,7 @@ async function loadMeters(filterId) {
         <div>Used so far <b>${fmtKwh(m.totalWhUsed)} kWh</b></div>
         <div>≈ <b>${hrs >= 1 ? hrs.toFixed(0) + " h" : Math.round(hrs * 60) + " min"}</b> of a 60 W bulb</div>
       </div>
-      ${name ? `<div class="row"><button class="btn small" data-act="topup" data-name="${esc(name)}">Top up</button><button class="btn small" data-act="sponsor" data-name="${esc(name)}">Sponsor this home</button><a class="btn small" href="https://bscscan.com/address/${CFG.GRID}#events" target="_blank" rel="noopener">On-chain</a></div>` : ""}
+      ${name ? `<div class="row"><button class="btn small" data-act="sponsor" data-name="${esc(name)}" data-id="${ids[i]}">Sponsor this home</button><button class="btn small" data-act="topup" data-name="${esc(name)}" data-id="${ids[i]}">Top up</button><a class="btn small" href="https://bscscan.com/address/${CFG.GRID}#events" target="_blank" rel="noopener">On-chain</a></div>` : ""}
     </article>`;
   }).join("");
 }
@@ -318,17 +333,48 @@ async function loadFeed() {
 
 // ---- prompts & copy
 const dlg = $("dlg"); window.dlg = dlg;
-let dlgMode = "topup", dlgName = "";
+let dlgMode = "topup", dlgName = "", dlgId = "", dlgTariff = 0n;
+const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";
+const ACT_IFACE = new ethers.Interface([
+  "function approve(address,uint256)", "function sponsor(bytes32,uint256)", "function topUp(bytes32,uint256)",
+]);
 function renderPrompt() {
-  const a = $("amt").value || "0.2";
-  const verb = dlgMode === "sponsor" ? `sponsor ${dlgName}'s Imole meter with ${a} USDT` : `top up ${dlgName}'s Imole meter with ${a} USDT`;
-  $("c-dlg").lastChild.textContent = `Using the imole-energy skill, ${verb} from my Agentic Wallet. Show me the preview and wait for my confirmation.`;
+  let a = Number($("amt").value);
+  if (!(a >= 0.05 && a <= 50)) { $("kwhOut").textContent = "Enter between 0.05 and 50 USDT"; return; }
+  a = Math.round(a * 100) / 100;
+  const wei = ethers.parseUnits(String(a), 18);
+  const wh = dlgTariff > 0n ? (wei * 1000n) / dlgTariff : 0n;
+  $("kwhOut").textContent = `= ${fmtKwh(wh)} kWh of solar energy for ${dlgName}`;
+  const approve = ACT_IFACE.encodeFunctionData("approve", [CFG.GRID, wei]);
+  const main = ACT_IFACE.encodeFunctionData(dlgMode === "sponsor" ? "sponsor" : "topUp", [dlgId, wei]);
+  const what = dlgMode === "sponsor" ? `Sponsor ${dlgName}'s Imole solar meter` : `Top up ${dlgName}'s Imole solar meter`;
+  $("c-dlg").lastChild.textContent =
+`Use my Binance Agentic Wallet on BSC (binanceChainId 56) to make these 2 contract calls, in order. For each one, run baw contract-call preview from my Agentic Wallet address, show me the result, and only run baw contract-call execute after I reply yes. Stop if a preview shows a simulation error or any risk warning.
+
+1) Approve exactly ${a} USDT for Imole (never more)
+   to: ${USDT_ADDR}
+   value: 0
+   inputData: ${approve}
+
+2) ${what} with ${a} USDT (${fmtKwh(wh)} kWh)
+   to: ${CFG.GRID}
+   value: 0
+   inputData: ${main}`;
+  $("c-dlg2").lastChild.textContent = `Using the imole-energy skill, ${dlgMode === "sponsor" ? "sponsor" : "top up"} ${dlgName}'s Imole meter with ${a} USDT from my Agentic Wallet. Show me the preview and wait for my confirmation.`;
 }
-$("c-dlg").appendChild(document.createTextNode(""));
+$("c-dlg").appendChild(document.createTextNode("")); $("c-dlg2").appendChild(document.createTextNode(""));
 $("amt").addEventListener("input", renderPrompt);
+async function openDialog(mode, name, id) {
+  dlgMode = mode; dlgName = name; dlgId = id; dlgTariff = (await grid.meters(id)).tariff;
+  $("dlgTitle").textContent = (mode === "sponsor" ? "Sponsor " : "Top up ") + name;
+  $("amt").value = mode === "sponsor" ? "0.2" : "1"; renderPrompt(); dlg.showModal();
+}
+$("quickSponsor").addEventListener("click", async () => {
+  try { await openDialog("sponsor", "onegeex.ai", await grid.meterOfHandle("onegeex")); } catch { toast("Still connecting to BNB Chain, try again"); }
+});
 document.addEventListener("click", async (e) => {
   const act = e.target.closest("[data-act]");
-  if (act) { dlgMode = act.dataset.act; dlgName = act.dataset.name; $("dlgTitle").textContent = (dlgMode === "sponsor" ? "Sponsor " : "Top up ") + dlgName; $("amt").value = dlgMode === "sponsor" ? "0.2" : "1"; renderPrompt(); dlg.showModal(); return; }
+  if (act) { openDialog(act.dataset.act, act.dataset.name, act.dataset.id); return; }
   const c = e.target.closest("[data-copy]");
   if (c) {
     const pre = $(c.dataset.copy); const text = [...pre.childNodes].filter((n) => n !== c).map((n) => n.textContent).join("").trim();
