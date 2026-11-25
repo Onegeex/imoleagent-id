@@ -1,6 +1,6 @@
 out/
 cache/
-broadcast/*/31337/
-.env
 lib/
 node_modules/
+.env
+*.lock
