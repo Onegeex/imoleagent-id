@@ -1,0 +1,9 @@
+{
+  "name": "imole-meter-sim",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Software stand-in for the Imole ESP32 meter + usage relayer (ImoleGrid on BNB Chain)",
+  "scripts": { "start": "node meter.js" },
+  "dependencies": { "ethers": "^6.13.4" }
+}

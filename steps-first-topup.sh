@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Step-by-step: bind meter imole:ife-001 to onegeex.ai, then top it up with 1 USDT by name.
+# Run ONE line at a time and check each preview before typing y.
+G=0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f
+USDT=0x55d398326f99059fF775485246999027B3197955
+# 1. Operator (you) proposes onegeex.ai as the meter's owner
+#    bash imole-call.sh "proposeOwner" $G 0x03ba33a48585db12c1df78cc5d76e7bcdb56e3f44262e21844fe0cb640b399c4a42045e40000000000000000000000006e1f725cf6e062ee88f19358001bd0f79c1a2437
+# 2. onegeex.ai accepts — meter now reachable by name
+#    bash imole-call.sh "bindOwner" $G 0x2740dd2e8585db12c1df78cc5d76e7bcdb56e3f44262e21844fe0cb640b399c4a42045e4
+# 3. Approve EXACTLY 1 USDT to ImoleGrid
+#    bash imole-call.sh "approve 1 USDT" $USDT 0x095ea7b30000000000000000000000000e5d4530b91b6c18a7c9a7831aa1c919d624150f0000000000000000000000000000000000000000000000000de0b6b3a7640000
+# 4. Top up onegeex.ai's meter with 1 USDT (= 5 kWh at $0.20/kWh)
+#    bash imole-call.sh "topUpByName onegeex.ai 1 USDT" $G 0xb597cf4400000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000000a6f6e65676565782e616900000000000000000000000000000000000000000000
