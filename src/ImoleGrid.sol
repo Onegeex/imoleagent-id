@@ -67,6 +67,15 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
     mapping(address => uint256) public usdtSponsored;
     uint256 public meterCount;
 
+    // Enumeration (so the website and judges can read everything without an indexer)
+    bytes32[] internal _meterIds;
+    address[] internal _participants; // every Agent ID holder that ever wrote to this contract
+    mapping(address => bool) public isParticipant;
+    address[] internal _sponsors;
+    mapping(address => bool) public isSponsor;
+    uint256 public totalWhCredited;
+    uint256 public totalUsdtCredited;
+
     // ------------------------------------------------------------------ events
 
     event MeterRegistered(bytes32 indexed meterId, address indexed operator, address device, uint256 tariff);
@@ -104,6 +113,10 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
 
     modifier onlyAgent() {
         if (agentId.balanceOf(msg.sender) == 0) revert NotAgentIdHolder();
+        if (!isParticipant[msg.sender]) {
+            isParticipant[msg.sender] = true;
+            _participants.push(msg.sender);
+        }
         _;
     }
 
@@ -130,6 +143,7 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
         m.device = device;
         m.tariff = tariff;
         m.active = true;
+        _meterIds.push(meterId);
         unchecked {
             ++meterCount;
         }
@@ -211,6 +225,10 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
         uint256 wh = _credit(meterId, amount, true);
         whSponsored[msg.sender] += wh;
         usdtSponsored[msg.sender] += amount;
+        if (!isSponsor[msg.sender]) {
+            isSponsor[msg.sender] = true;
+            _sponsors.push(msg.sender);
+        }
     }
 
     /// @notice Settle device-signed usage. Anyone may submit (e.g. a relayer); only the
@@ -287,6 +305,29 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
         return (p.set, p.maxPerTopUp, p.maxPerWeek, p.spentThisWeek, p.pendingAt);
     }
 
+    function participantCount() external view returns (uint256) {
+        return _participants.length;
+    }
+
+    function sponsorCount() external view returns (uint256) {
+        return _sponsors.length;
+    }
+
+    /// @notice Page through registered meter ids.
+    function meterIds(uint256 offset, uint256 limit) external view returns (bytes32[] memory out) {
+        return _page32(_meterIds, offset, limit);
+    }
+
+    /// @notice Page through every Agent ID holder that has interacted with ImoleGrid.
+    function participants(uint256 offset, uint256 limit) external view returns (address[] memory) {
+        return _pageAddr(_participants, offset, limit);
+    }
+
+    /// @notice Page through sponsors (for the "lit by" wall); pair with whSponsored / handleOf.
+    function sponsors(uint256 offset, uint256 limit) external view returns (address[] memory) {
+        return _pageAddr(_sponsors, offset, limit);
+    }
+
     function domainSeparator() external view returns (bytes32) {
         return _domainSeparatorV4();
     }
@@ -303,6 +344,8 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
         usdt.safeTransferFrom(msg.sender, address(this), amount);
         m.escrow += uint128(amount);
         m.creditWh += uint64(wh);
+        totalWhCredited += wh;
+        totalUsdtCredited += amount;
         emit Credited(meterId, msg.sender, _handle(msg.sender), amount, wh, sponsored);
     }
 
@@ -327,6 +370,22 @@ contract ImoleGrid is EIP712, ReentrancyGuard {
             p.pendingMaxPerTopUp = 0;
             p.pendingMaxPerWeek = 0;
         }
+    }
+
+    function _page32(bytes32[] storage a, uint256 offset, uint256 limit) internal view returns (bytes32[] memory out) {
+        uint256 n = a.length;
+        if (offset >= n) return out;
+        uint256 end = offset + limit > n ? n : offset + limit;
+        out = new bytes32[](end - offset);
+        for (uint256 i = offset; i < end; i++) out[i - offset] = a[i];
+    }
+
+    function _pageAddr(address[] storage a, uint256 offset, uint256 limit) internal view returns (address[] memory out) {
+        uint256 n = a.length;
+        if (offset >= n) return out;
+        uint256 end = offset + limit > n ? n : offset + limit;
+        out = new address[](end - offset);
+        for (uint256 i = offset; i < end; i++) out[i - offset] = a[i];
     }
 
     function _handle(address who) internal view returns (string memory) {

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "skills": {
+    "imole-energy": {
+      "source": "Onegeex/imoleagent-id",
+      "commit": "7e1a7013ac6ffb2fc4214413ad14ef2b0c39a0e1",
+      "sourceType": "github",
+      "skillPath": "skill/imole-energy/SKILL.md",
+      "computedHash": "4df6cd5e87421f97b664ade5499e39df0b02f72f4edab87772d7058e3e86e965"
+    }
+  }
+}

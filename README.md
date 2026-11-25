@@ -8,12 +8,12 @@ Built for the **Binance Wallet × BNB Chain Agent ID Hackathon**.
 
 | | Address |
 |---|---|
-| ImoleGrid | [`0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f`](https://bscscan.com/address/0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f) |
+| ImoleGrid | [`0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99`](https://bscscan.com/address/0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99) |
 | Agent ID registry (SPACE ID) | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
 | USDT (BSC-USD) | `0x55d398326f99059fF775485246999027B3197955` |
 | Pilot meter `imole:ife-001` | `0x8585db12c1df78cc5d76e7bcdb56e3f44262e21844fe0cb640b399c4a42045e4`, bound to **onegeex.ai** |
 
-First mainnet activity: meter registered by onegeex.ai, bound to the name, topped up by name (1 USDT = 5 kWh), and usage settled on-chain from device-signed reports ([tx](https://bscscan.com/tx/0x2d8f005606f334a4dd8ee2aed75cad06c8562e7f4410de1a219c1935bd0d5ad7)).
+ImoleGrid v2 adds on-chain enumeration (participants, meters, sponsors, totals) so the site and judges can read everything without an indexer. v1 (`0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f`) proved the full loop first: meter registered by onegeex.ai, topped up by name, and usage settled from device-signed reports ([tx](https://bscscan.com/tx/0x2d8f005606f334a4dd8ee2aed75cad06c8562e7f4410de1a219c1935bd0d5ad7)).
 
 ## How Agent ID is used
 
@@ -47,7 +47,7 @@ Agent ID is the core of the contract, not a login button:
 | Path | What |
 |---|---|
 | `src/ImoleGrid.sol` | the contract |
-| `test/` | 26 Foundry tests (gating, names, policy timelock, signatures, replay, escrow fuzz) |
+| `test/` | 28 Foundry tests (gating, names, policy timelock, signatures, replay, enumeration, escrow fuzz) |
 | `script/Deploy.s.sol` | mainnet deploy |
 | `skill/imole-energy/` | Agentic Wallet skill: `SKILL.md` + zero-dependency helper `scripts/imole.mjs` |
 | `meter-sim/` | software meter + relayer (same protocol as the ESP32 firmware) |
@@ -64,7 +64,7 @@ Requires the Binance Agentic Wallet skill / `baw` CLI, an Agent ID, and Develope
 
 ```bash
 bash setup.sh      # fetch OpenZeppelin + forge-std
-forge test         # 26 tests
+forge test         # 28 tests
 ```
 
 ## Hardware (pilot)

@@ -13,7 +13,7 @@
 // Output is JSON. Build commands return { calls: [{ step, to, inputData, value }] } to pass,
 // one at a time, to: baw contract-call preview --binanceChainId 56 --from <wallet> --to <to> --value 0 --inputData <inputData> --json
 
-const GRID = process.env.IMOLE_GRID || "0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f";
+const GRID = process.env.IMOLE_GRID || "0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99";
 const USDT = "0x55d398326f99059fF775485246999027B3197955"; // BSC-USD, 18 decimals
 const RPC = process.env.BSC_RPC_URL || "https://bsc-dataseed.bnbchain.org";
 const MAX_USDT_PER_CALL = Number(process.env.IMOLE_MAX_USDT || 50); // sanity cap for a single build

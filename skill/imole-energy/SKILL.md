@@ -8,7 +8,7 @@ description: Check, top up, sponsor and set spending limits for Imole pay-as-you
 Imole meters are real solar meters whose relay switches on while prepaid credit remains.
 Credit lives in the ImoleGrid contract on BNB Chain (chain 56):
 
-- ImoleGrid: `0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f`
+- ImoleGrid: `0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99`
 - USDT (BSC-USD, 18 decimals): `0x55d398326f99059fF775485246999027B3197955`
 - Agent ID registry: `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F`
 

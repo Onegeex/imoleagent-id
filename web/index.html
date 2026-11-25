@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imole · Your AI agent keeps the lights on</title>
+<meta name="description" content="Pay-as-you-go solar meters that Binance Agent ID holders top up from their Agentic Wallet. Live on BNB Chain.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='14' fill='%23FFB020'/><g stroke='%23FFB020' stroke-width='5' stroke-linecap='round'><path d='M32 4v8M32 52v8M4 32h8M52 32h8M12 12l6 6M46 46l6 6M12 52l6-6M46 18l6-6'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0a08; --bg2:#15110c; --card:#1b1610; --line:#2e261b; --ink:#f6efe4; --mute:#b3a58f; --dim:#7d705d;
+  --sun:#ffb020; --sun2:#ff7a1a; --ok:#7bd88f; --off:#5a5045; --warn:#ffcf70;
+  --r:18px; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--sun);text-decoration:none} a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+header.top{position:sticky;top:0;z-index:5;background:rgba(12,10,8,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;gap:10px;align-items:center;font:800 22px Fraunces,serif;letter-spacing:.2px;color:var(--ink)}
+.brand i{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,var(--sun) 45%,transparent 47%),conic-gradient(from 0deg,var(--sun) 0 6%,transparent 6% 12.5%,var(--sun) 12.5% 18.5%,transparent 18.5% 25%,var(--sun) 25% 31%,transparent 31% 37.5%,var(--sun) 37.5% 43.5%,transparent 43.5% 50%,var(--sun) 50% 56%,transparent 56% 62.5%,var(--sun) 62.5% 68.5%,transparent 68.5% 75%,var(--sun) 75% 81%,transparent 81% 87.5%,var(--sun) 87.5% 93.5%,transparent 93.5%)}
+nav a{color:var(--mute);margin-left:22px;font-size:14px} nav a:hover{color:var(--ink);text-decoration:none}
+@media(max-width:720px){nav a:not(.cta){display:none}}
+.cta{background:var(--sun);color:#1a1206!important;padding:8px 14px;border-radius:999px;font-weight:600}
+.hero{position:relative;overflow:hidden;padding:86px 0 56px}
+.hero:before{content:"";position:absolute;inset:-30% -10% auto auto;width:720px;height:720px;background:radial-gradient(circle,rgba(255,176,32,.28),rgba(255,122,26,.08) 45%,transparent 70%);pointer-events:none}
+.eyebrow{font:500 13px var(--mono);color:var(--sun);letter-spacing:.08em;text-transform:uppercase}
+h1{font:800 clamp(40px,6.4vw,76px)/1.02 Fraunces,serif;margin:14px 0 18px;max-width:14ch;letter-spacing:-.5px}
+h1 em{font-style:normal;color:var(--sun)}
+.lede{font-size:19px;color:var(--mute);max-width:60ch;margin:0 0 28px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:11px 16px;border-radius:12px;font:600 14px Inter;cursor:pointer}
+.btn:hover{border-color:var(--sun);text-decoration:none}
+.btn.primary{background:var(--sun);border-color:var(--sun);color:#1a1206}
+.btn.small{padding:8px 12px;font-size:13px;border-radius:10px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:48px}
+.stat{background:var(--bg2);padding:18px 20px}
+.stat b{display:block;font:800 30px Fraunces,serif;color:var(--ink)} .stat span{font-size:13px;color:var(--dim)}
+@media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2{font:800 34px/1.1 Fraunces,serif;margin:0 0 8px} .sub{color:var(--mute);margin:0 0 26px}
+.search{display:flex;gap:10px;margin:0 0 22px;max-width:520px}
+.search input{flex:1;background:var(--card);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:12px;font:15px Inter}
+.search input:focus{outline:none;border-color:var(--sun)}
+.meters{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.meter{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative;overflow:hidden}
+.meter.on{border-color:rgba(255,176,32,.45)}
+.meter.on:after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,176,32,.22),transparent 65%);pointer-events:none}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mname{font:700 20px Inter} .mid{font:12px var(--mono);color:var(--dim)}
+.bulb{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;background:#231d15;border:1px solid var(--line)}
+.bulb svg{width:24px;height:24px;fill:var(--off)}
+.on .bulb{background:radial-gradient(circle,rgba(255,176,32,.5),rgba(255,176,32,.05) 70%);border-color:var(--sun);animation:glow 2.4s ease-in-out infinite}
+.on .bulb svg{fill:var(--sun)}
+@keyframes glow{50%{box-shadow:0 0 28px 6px rgba(255,176,32,.35)}}
+@media(prefers-reduced-motion:reduce){.on .bulb{animation:none}}
+.kwh{font:800 40px Fraunces,serif;margin:16px 0 2px} .kwh small{font:500 15px Inter;color:var(--mute)}
+.bar{height:8px;background:#2a2219;border-radius:9px;overflow:hidden;margin:10px 0 14px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--sun2),var(--sun));border-radius:9px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px;color:var(--mute);margin-bottom:16px}
+.facts b{color:var(--ink);font-weight:600}
+.pill{display:inline-block;font:600 11px var(--mono);padding:3px 8px;border-radius:999px;letter-spacing:.05em}
+.pill.on{background:rgba(123,216,143,.12);color:var(--ok)} .pill.off{background:#2a231b;color:var(--dim)}
+.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:22px} @media(max-width:880px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:8px 0}
+.panel h3{font:700 15px Inter;margin:12px 20px 8px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+.li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 20px;border-top:1px solid var(--line);font-size:14px}
+.li:first-of-type{border-top:0} .li .who{font-weight:600} .li .meta{color:var(--dim);font-size:12px;font-family:var(--mono)}
+.rank{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;background:#2a2219;color:var(--sun);font:700 12px var(--mono);margin-right:10px}
+.empty{padding:22px 20px;color:var(--dim);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px} @media(max-width:880px){.steps{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.step .n{font:800 14px var(--mono);color:var(--sun)} .step h4{font:700 18px Inter;margin:8px 0 6px} .step p{color:var(--mute);margin:0;font-size:14px}
+pre.code{position:relative;background:#0f0c09;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:13px/1.6 var(--mono);color:#ffe2a8;overflow:auto;margin:10px 0 0;white-space:pre-wrap;word-break:break-all}
+pre.code button{position:absolute;top:8px;right:8px}
+.safety{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 28px;color:var(--mute);font-size:14px;padding:0;list-style:none}
+.safety li:before{content:"✓";color:var(--ok);margin-right:10px;font-weight:700}
+@media(max-width:720px){.safety{grid-template-columns:1fr}}
+.risk{margin-top:22px;padding:14px 16px;border:1px solid #5a4316;background:rgba(255,176,32,.06);border-radius:12px;color:var(--warn);font-size:13px}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--dim);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.mono{font-family:var(--mono)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#1a1206;padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%)}
+dialog{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);max-width:560px;width:92vw;padding:24px}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog label{display:block;font-size:13px;color:var(--mute);margin:14px 0 6px}
+dialog input{width:100%;background:#0f0c09;border:1px solid var(--line);color:var(--ink);padding:10px 12px;border-radius:10px;font:15px Inter}
+.loading{color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#"><i></i>Imole</a>
+  <nav><a href="#meters">Meters</a><a href="#wall">Lit by</a><a href="#how">How it works</a><a href="#safety">Safety</a><a class="cta" href="#install">Install skill</a></nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Live on BNB Chain · Agent ID native</div>
+  <h1>Your AI agent keeps the <em>lights on.</em></h1>
+  <p class="lede">Imole meters are real pay-as-you-go solar meters. Agent ID holders top them up from their Binance Agentic Wallet, by <b>.ai</b> name, under spending limits they set on-chain, and the relay switches on within seconds. Anyone with an Agent ID can light someone else's home too.</p>
+  <div class="row">
+    <a class="btn primary" href="#meters">See live meters</a>
+    <a class="btn" href="#install">Give your agent the skill</a>
+  </div>
+  <div class="stats" id="stats">
+    <div class="stat"><b id="s-holders">–</b><span>Agent ID holders served</span></div>
+    <div class="stat"><b id="s-kwh">–</b><span>kWh paid for by agents</span></div>
+    <div class="stat"><b id="s-usdt">–</b><span>USDT routed to energy</span></div>
+    <div class="stat"><b id="s-meters">–</b><span>Meters online</span></div>
+    <div class="stat"><b id="s-sponsors">–</b><span>Sponsors</span></div>
+  </div>
+</div></div>
+
+<section id="meters"><div class="wrap">
+  <h2>Live meters</h2>
+  <p class="sub">Read straight from the contract every 15 seconds. A meter's light is on while it has prepaid credit.</p>
+  <form class="search" id="find"><input id="q" placeholder="Find a meter by name, e.g. onegeex.ai" autocomplete="off"><button class="btn">Find</button></form>
+  <div class="meters" id="meterList"><div class="loading">Reading BNB Chain…</div></div>
+</div></section>
+
+<section id="wall"><div class="wrap grid2">
+  <div>
+    <h2>Lit by</h2>
+    <p class="sub">Agent ID holders who gifted energy to someone else's home. No token, no yield: just light.</p>
+    <div class="panel" id="sponsorList"><div class="empty">Loading…</div></div>
+  </div>
+  <div>
+    <h2>Recent activity</h2>
+    <p class="sub">Top-ups and metered usage from the last few hours.</p>
+    <div class="panel" id="feed"><div class="empty">Loading…</div></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2>How it works</h2>
+  <p class="sub">Agentic Wallets can't connect to websites, so there is no "connect wallet" here. Your own AI agent does the paying, and you confirm every transaction in the Binance app.</p>
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h4>Ask your agent</h4><p>"Top up mama.ai with 1 USDT." The Imole skill resolves the name to a meter, quotes the kWh and checks your limits.</p></div>
+    <div class="step"><div class="n">02</div><h4>You confirm</h4><p>It builds an exact-amount approval and the top-up, shows the official <span class="mono">baw</span> preview, and waits for your yes.</p></div>
+    <div class="step"><div class="n">03</div><h4>The light comes on</h4><p>The meter sees new credit and closes its relay. It signs its own usage reports, and the installer is paid only for energy actually used.</p></div>
+  </div>
+</div></section>
+
+<section id="install"><div class="wrap grid2">
+  <div>
+    <h2>Give your agent the skill</h2>
+    <p class="sub">Works with Binance AI Pro, Claude Code, Cursor, Codex and any agent that has the Binance Agentic Wallet skill. You need an Agent ID and Developer Mode on (Agentic Wallet → Settings).</p>
+    <pre class="code" id="c-install"><button class="btn small" data-copy="c-install">Copy</button>npx skills add binance/binance-skills-hub --skill binance-agentic-wallet
+npx skills add Onegeex/imoleagent-id --skill imole-energy</pre>
+  </div>
+  <div>
+    <h2>Then just ask</h2>
+    <p class="sub">Copy a prompt and paste it to your agent.</p>
+    <pre class="code" id="c-p1"><button class="btn small" data-copy="c-p1">Copy</button>Using the imole-energy skill, show me the status of onegeex.ai's Imole meter.</pre>
+    <pre class="code" id="c-p2"><button class="btn small" data-copy="c-p2">Copy</button>Using the imole-energy skill, sponsor onegeex.ai's Imole meter with 0.2 USDT from my Agentic Wallet. Show me the preview and wait for my confirmation.</pre>
+    <pre class="code" id="c-p3"><button class="btn small" data-copy="c-p3">Copy</button>Using the imole-energy skill, never let top-ups to onegeex.ai's meter exceed 2 USDT each or 5 USDT per week.</pre>
+  </div>
+</div></section>
+
+<section id="safety"><div class="wrap">
+  <h2>Safety, by design</h2>
+  <p class="sub">The contract is open source and verified. Here is exactly what it can and can't do.</p>
+  <ul class="safety">
+    <li>No owner, admin, pause, upgrade or mint function exists in ImoleGrid</li>
+    <li>Escrowed USDT moves only against usage signed by the meter's own key</li>
+    <li>Only Agent ID holders can top up, sponsor or set limits</li>
+    <li>Exact-amount approvals only, never unlimited</li>
+    <li>Your own spending limits on-chain; raising one waits 24 hours</li>
+    <li>No QR-code or pairing-code login, no wallet sessions stored by this site</li>
+    <li>This site only reads public chain data; it never asks for keys</li>
+    <li>.ai names resolve only to a meter for payment, never to balances or history</li>
+  </ul>
+  <div class="risk"><b>Risk notice.</b> Energy credit is a prepayment for electricity on a specific meter and is not refundable or transferable. Sponsoring is a gift with no financial return. Crypto transactions are irreversible; check every preview before you confirm. Imole is not affiliated with or endorsed by Binance.</div>
+</div></section>
+
+<footer><div class="wrap">
+  <div>Imole · pay-as-you-go solar for the agent economy · <a href="https://github.com/Onegeex/imoleagent-id">GitHub</a></div>
+  <div class="mono">ImoleGrid <a id="gridLink" href="#"></a> · BNB Chain</div>
+</div></footer>
+
+<dialog id="dlg">
+  <h3 style="margin:0 0 4px;font:700 20px Inter" id="dlgTitle">Prompt for your agent</h3>
+  <p style="color:var(--mute);margin:0;font-size:14px">Agentic Wallets act only through your AI agent. Copy this and paste it to your agent; you'll confirm in the Binance app.</p>
+  <label for="amt">Amount (USDT)</label><input id="amt" type="number" min="0.01" step="0.01" value="0.2">
+  <pre class="code" id="c-dlg"><button class="btn small" data-copy="c-dlg">Copy</button></pre>
+  <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn" onclick="dlg.close()">Close</button></div>
+</dialog>
+<div class="toast" id="toast">Copied</div>
+
+<script type="module">
+import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.13.4/+esm";
+
+const CFG = {
+  GRID: "0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99",
+  DEPLOY_BLOCK: 135740437,
+  REGISTRY: "0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F",
+  RPCS: ["https://bsc-rpc.publicnode.com", "https://bsc-dataseed.bnbchain.org", "https://bsc-dataseed1.defibit.io"],
+  FEED_BLOCKS: 30000, // ~4 hours
+};
+
+const GRID_ABI = [
+  "function meters(bytes32) view returns (address operator,address device,address owner,address pendingOwner,uint128 tariff,uint128 escrow,uint64 creditWh,uint64 lastNonce,uint64 totalWhUsed,bool active)",
+  "function meterIds(uint256,uint256) view returns (bytes32[])",
+  "function meterCount() view returns (uint256)",
+  "function participantCount() view returns (uint256)",
+  "function sponsorCount() view returns (uint256)",
+  "function sponsors(uint256,uint256) view returns (address[])",
+  "function whSponsored(address) view returns (uint256)",
+  "function usdtSponsored(address) view returns (uint256)",
+  "function totalWhCredited() view returns (uint256)",
+  "function totalUsdtCredited() view returns (uint256)",
+  "function meterOfHandle(string) view returns (bytes32)",
+  "event Credited(bytes32 indexed meterId,address indexed payer,string handle,uint256 usdtAmount,uint256 wh,bool sponsored)",
+  "event UsageSettled(bytes32 indexed meterId,uint64 nonce,uint256 wh,uint256 paidToOperator,uint256 creditWhLeft)",
+];
+const REG_ABI = ["function handleOf(address) view returns (string)"];
+
+let provider, grid, reg;
+async function connect() {
+  for (const url of CFG.RPCS) {
+    try {
+      const p = new ethers.JsonRpcProvider(url, 56, { staticNetwork: true });
+      await p.getBlockNumber();
+      provider = p; grid = new ethers.Contract(CFG.GRID, GRID_ABI, p); reg = new ethers.Contract(CFG.REGISTRY, REG_ABI, p);
+      return;
+    } catch {}
+  }
+  throw new Error("Could not reach BNB Chain");
+}
+
+const $ = (id) => document.getElementById(id);
+const fmtKwh = (wh) => (Number(wh) / 1000).toLocaleString(undefined, { maximumFractionDigits: Number(wh) < 10000 ? 2 : 1 });
+const fmtUsdt = (w) => Number(ethers.formatUnits(w, 18)).toLocaleString(undefined, { maximumFractionDigits: 2 });
+const short = (a) => a.slice(0, 6) + "…" + a.slice(-4);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const handles = new Map();
+async function nameOf(addr) {
+  if (!addr || addr === ethers.ZeroAddress) return null;
+  const k = addr.toLowerCase();
+  if (!handles.has(k)) handles.set(k, reg.handleOf(addr).then((h) => (h ? h + ".ai" : null)).catch(() => null));
+  return handles.get(k);
+}
+
+const bulb = '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26A7 7 0 0 0 12 2zm-3 18h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1z"/></svg>';
+let maxCredit = 1;
+
+async function loadMeters(filterId) {
+  const ids = filterId ? [filterId] : await grid.meterIds(0, 60);
+  if (!ids.length) { $("meterList").innerHTML = '<div class="loading">No meters registered yet.</div>'; return; }
+  const ms = await Promise.all(ids.map((id) => grid.meters(id)));
+  maxCredit = Math.max(maxCredit, ...ms.map((m) => Number(m.creditWh)));
+  const names = await Promise.all(ms.map((m) => nameOf(m.owner)));
+  $("meterList").innerHTML = ms.map((m, i) => {
+    const on = m.active && m.creditWh > 0n;
+    const name = names[i];
+    const pct = Math.min(100, (Number(m.creditWh) / Math.max(maxCredit, 5000)) * 100);
+    const tariff = Number(ethers.formatUnits(m.tariff, 18));
+    const hrs = Number(m.creditWh) / 60;
+    return `<article class="meter ${on ? "on" : ""}">
+      <div class="mhead"><div><div class="mname">${name ? esc(name) : "Unbound meter"}</div><div class="mid">${ids[i].slice(0, 10)}…${ids[i].slice(-6)}</div></div><div class="bulb" title="${on ? "Relay on" : "Relay off"}">${bulb}</div></div>
+      <div class="kwh">${fmtKwh(m.creditWh)} <small>kWh left</small></div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="facts">
+        <div>Status <span class="pill ${on ? "on" : "off"}">${on ? "LIGHT ON" : m.active ? "NO CREDIT" : "PAUSED"}</span></div>
+        <div>Tariff <b>${tariff.toFixed(2)} USDT/kWh</b></div>
+        <div>Used so far <b>${fmtKwh(m.totalWhUsed)} kWh</b></div>
+        <div>≈ <b>${hrs >= 1 ? hrs.toFixed(0) + " h" : Math.round(hrs * 60) + " min"}</b> of a 60 W bulb</div>
+      </div>
+      ${name ? `<div class="row"><button class="btn small" data-act="topup" data-name="${esc(name)}">Top up</button><button class="btn small" data-act="sponsor" data-name="${esc(name)}">Sponsor this home</button><a class="btn small" href="https://bscscan.com/address/${CFG.GRID}#events" target="_blank" rel="noopener">On-chain</a></div>` : ""}
+    </article>`;
+  }).join("");
+}
+
+async function loadStats() {
+  const [p, kwh, usdt, mc, sc] = await Promise.all([grid.participantCount(), grid.totalWhCredited(), grid.totalUsdtCredited(), grid.meterCount(), grid.sponsorCount()]);
+  $("s-holders").textContent = p; $("s-kwh").textContent = fmtKwh(kwh); $("s-usdt").textContent = fmtUsdt(usdt);
+  $("s-meters").textContent = mc; $("s-sponsors").textContent = sc;
+  return Number(sc);
+}
+
+async function loadWall(n) {
+  if (!n) { $("sponsorList").innerHTML = '<div class="empty">No sponsors yet. Be the first to light a home.</div>'; return; }
+  const addrs = await grid.sponsors(0, 200);
+  const rows = await Promise.all(addrs.map(async (a) => ({ a, wh: await grid.whSponsored(a), usdt: await grid.usdtSponsored(a), name: await nameOf(a) })));
+  rows.sort((x, y) => (y.wh > x.wh ? 1 : -1));
+  $("sponsorList").innerHTML = rows.slice(0, 30).map((r, i) =>
+    `<div class="li"><div><span class="rank">${i + 1}</span><span class="who">${esc(r.name || short(r.a))}</span></div><div class="meta">${fmtKwh(r.wh)} kWh · ${fmtUsdt(r.usdt)} USDT</div></div>`).join("");
+}
+
+async function loadFeed() {
+  const latest = await provider.getBlockNumber();
+  const from = Math.max(CFG.DEPLOY_BLOCK, latest - CFG.FEED_BLOCKS);
+  const logs = [];
+  for (let start = from; start <= latest; start += 9999) {
+    const end = Math.min(latest, start + 9998);
+    try { logs.push(...(await provider.getLogs({ address: CFG.GRID, fromBlock: start, toBlock: end }))); } catch {}
+  }
+  const items = [];
+  for (const l of logs.reverse()) {
+    let ev; try { ev = grid.interface.parseLog(l); } catch { continue; }
+    if (ev.name === "Credited") {
+      const owner = (await grid.meters(ev.args.meterId)).owner;
+      const to = (await nameOf(owner)) || "a meter";
+      const who = ev.args.handle ? ev.args.handle + ".ai" : short(ev.args.payer);
+      items.push(`<div class="li"><div><span class="who">${esc(who)}</span> ${ev.args.sponsored ? "sponsored" : "topped up"} <span class="who">${esc(to)}</span></div><div class="meta">${fmtUsdt(ev.args.usdtAmount)} USDT · ${fmtKwh(ev.args.wh)} kWh · <a href="https://bscscan.com/tx/${l.transactionHash}" target="_blank" rel="noopener">tx</a></div></div>`);
+    } else if (ev.name === "UsageSettled" && ev.args.wh > 0n) {
+      items.push(`<div class="li"><div>Meter <span class="mono">${ev.args.meterId.slice(0, 8)}…</span> used power</div><div class="meta">${fmtKwh(ev.args.wh)} kWh · ${fmtKwh(ev.args.creditWhLeft)} left · <a href="https://bscscan.com/tx/${l.transactionHash}" target="_blank" rel="noopener">tx</a></div></div>`);
+    }
+    if (items.length >= 14) break;
+  }
+  $("feed").innerHTML = items.join("") || '<div class="empty">No activity in the last few hours.</div>';
+}
+
+// ---- prompts & copy
+const dlg = $("dlg"); window.dlg = dlg;
+let dlgMode = "topup", dlgName = "";
+function renderPrompt() {
+  const a = $("amt").value || "0.2";
+  const verb = dlgMode === "sponsor" ? `sponsor ${dlgName}'s Imole meter with ${a} USDT` : `top up ${dlgName}'s Imole meter with ${a} USDT`;
+  $("c-dlg").lastChild.textContent = `Using the imole-energy skill, ${verb} from my Agentic Wallet. Show me the preview and wait for my confirmation.`;
+}
+$("c-dlg").appendChild(document.createTextNode(""));
+$("amt").addEventListener("input", renderPrompt);
+document.addEventListener("click", async (e) => {
+  const act = e.target.closest("[data-act]");
+  if (act) { dlgMode = act.dataset.act; dlgName = act.dataset.name; $("dlgTitle").textContent = (dlgMode === "sponsor" ? "Sponsor " : "Top up ") + dlgName; $("amt").value = dlgMode === "sponsor" ? "0.2" : "1"; renderPrompt(); dlg.showModal(); return; }
+  const c = e.target.closest("[data-copy]");
+  if (c) {
+    const pre = $(c.dataset.copy); const text = [...pre.childNodes].filter((n) => n !== c).map((n) => n.textContent).join("").trim();
+    try { await navigator.clipboard.writeText(text); toast("Copied"); } catch { toast("Select the text and copy it"); }
+  }
+});
+function toast(t) { const el = $("toast"); el.textContent = t; el.classList.add("show"); setTimeout(() => el.classList.remove("show"), 1600); }
+
+$("find").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const q = $("q").value.trim().toLowerCase();
+  if (!q) return loadMeters();
+  try { await loadMeters(await grid.meterOfHandle(q)); }
+  catch { $("meterList").innerHTML = `<div class="loading">No Imole meter is bound to "${esc(q)}" yet.</div>`; }
+});
+
+// ---- boot
+$("gridLink").textContent = short(CFG.GRID); $("gridLink").href = `https://bscscan.com/address/${CFG.GRID}`;
+try {
+  await connect();
+  const sc = await loadStats();
+  await Promise.all([loadMeters(), loadWall(sc)]);
+  loadFeed();
+  setInterval(async () => { try { if (!$("q").value) await loadMeters(); await loadStats(); } catch {} }, 15000);
+  setInterval(() => loadFeed().catch(() => {}), 60000);
+} catch (err) {
+  $("meterList").innerHTML = `<div class="loading">Couldn't reach BNB Chain right now (${esc(err.message)}). Refresh to try again.</div>`;
+}
+</script>
+</body>
+</html>

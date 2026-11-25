@@ -13,7 +13,7 @@ import { ethers } from "ethers";
 const env = loadEnv(new URL("./.env", import.meta.url));
 const cfg = {
   rpc: env.RPC_URL || "https://bsc-dataseed.bnbchain.org",
-  grid: env.GRID || "0x0e5D4530b91b6c18a7c9A7831Aa1c919d624150f",
+  grid: env.GRID || "0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99",
   meterLabel: env.METER_LABEL || "imole:ife-001",
   deviceKey: env.DEVICE_KEY, // private key from `cast wallet new` (meter's signing key)
   relayerKey: env.RELAYER_KEY, // optional; otherwise the Foundry keystore below is used
@@ -108,8 +108,12 @@ async function settle() {
 
 await tick();
 setInterval(tick, cfg.pollS * 1000);
+let stopping = false;
 process.on("SIGINT", async () => {
-  log("Stopping - settling remaining usage first…");
+  if (stopping) { log("Forced stop."); process.exit(0); }
+  stopping = true;
+  setTimeout(() => { log("Settlement taking too long - exiting. Unsettled usage will be reported next run."); process.exit(0); }, 30000).unref();
+  log("Stopping - settling remaining usage first… (press Ctrl+C again to force)");
   if (pendingWh >= 1 && !settling) await settle().catch((e) => log(`settle failed: ${short(e)}`));
   process.exit(0);
 });

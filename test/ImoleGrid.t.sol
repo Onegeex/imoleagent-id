@@ -231,6 +231,36 @@ contract ImoleGridTest is Test {
         assertEq(grid.usdtSponsored(friend), 0.5e18);
     }
 
+    // ---------------------------------------------------------------- enumeration
+
+    function test_EnumerationTracksParticipantsSponsorsMeters() public {
+        _pay(home, 1e18);
+        _pay(home, 1e18); // same holder twice counts once
+        vm.startPrank(friend);
+        usdt.approve(address(grid), 0.5e18);
+        grid.sponsor(METER, 0.5e18);
+        vm.stopPrank();
+
+        assertEq(grid.participantCount(), 3); // operator (register), home, friend
+        address[] memory p = grid.participants(0, 10);
+        assertEq(p[0], operator);
+        assertEq(p[1], home);
+        assertEq(p[2], friend);
+        assertEq(grid.sponsorCount(), 1);
+        assertEq(grid.sponsors(0, 10)[0], friend);
+        assertEq(grid.meterIds(0, 10)[0], METER);
+        assertEq(grid.meterIds(5, 10).length, 0);
+        assertEq(grid.totalWhCredited(), 12_500);
+        assertEq(grid.totalUsdtCredited(), 2.5e18);
+    }
+
+    function test_FailedCallDoesNotAddParticipant() public {
+        vm.prank(stranger);
+        vm.expectRevert(ImoleGrid.NotAgentIdHolder.selector);
+        grid.topUp(METER, 1e18);
+        assertEq(grid.participantCount(), 1);
+    }
+
     // ---------------------------------------------------------------- usage
 
     function test_UsagePaysOperator() public {
