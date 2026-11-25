@@ -1,0 +1,23 @@
+# Keeps the pilot meter "running" while the ESP32 isn't installed yet:
+# every 30 min it bills a simulated 60 W load since the last settlement, signed by the meter key.
+name: imole-meter
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+concurrency: { group: imole-meter, cancel-in-progress: false }
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults: { run: { working-directory: meter-sim } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci --omit=dev || npm install --omit=dev
+      - run: node tick.js
+        env:
+          DEVICE_KEY: ${{ secrets.DEVICE_KEY }}
+          RELAYER_KEY: ${{ secrets.RELAYER_KEY }}
+          LOAD_W: "60"
