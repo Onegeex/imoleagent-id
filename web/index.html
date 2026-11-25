@@ -302,6 +302,7 @@ async function loadFeed() {
   const items = [];
   for (const l of logs.reverse()) {
     let ev; try { ev = grid.interface.parseLog(l); } catch { continue; }
+    if (!ev) continue;
     if (ev.name === "Credited") {
       const owner = (await grid.meters(ev.args.meterId)).owner;
       const to = (await nameOf(owner)) || "a meter";
