@@ -85,10 +85,9 @@ static void keccak256(const uint8_t* in, size_t len, uint8_t out[32]) {
 // ------------------------------------------------------------------ secp256k1
 static const char* IM_N_HEX = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141";
 
-typedef int (*im_rng_t)(void*, unsigned char*, size_t);
 
 // Ethereum address (20 bytes) for a 32-byte private key. Returns 0 on success.
-static int eth_address(const uint8_t priv[32], uint8_t addr[20], im_rng_t rng, void* rng_ctx) {
+static int eth_address(const uint8_t priv[32], uint8_t addr[20], int (*rng)(void*, unsigned char*, size_t), void* rng_ctx) {
   mbedtls_ecp_group grp; mbedtls_ecp_point Q; mbedtls_mpi d;
   mbedtls_ecp_group_init(&grp); mbedtls_ecp_point_init(&Q); mbedtls_mpi_init(&d);
   int ret = mbedtls_ecp_group_load(&grp, MBEDTLS_ECP_DP_SECP256K1);
@@ -102,7 +101,7 @@ static int eth_address(const uint8_t priv[32], uint8_t addr[20], im_rng_t rng, v
 }
 
 // Sign a 32-byte digest. Writes r(32) || s(32) || v(1) with v = 27/28 and low-s (EIP-2).
-static int eth_sign(const uint8_t priv[32], const uint8_t digest[32], uint8_t sig[65], im_rng_t rng, void* rng_ctx) {
+static int eth_sign(const uint8_t priv[32], const uint8_t digest[32], uint8_t sig[65], int (*rng)(void*, unsigned char*, size_t), void* rng_ctx) {
   mbedtls_ecp_group grp; mbedtls_ecp_point R; mbedtls_mpi d, k, z, r, s, n, halfN, kinv, t;
   mbedtls_ecp_group_init(&grp); mbedtls_ecp_point_init(&R);
   mbedtls_mpi* all[] = {&d, &k, &z, &r, &s, &n, &halfN, &kinv, &t};
