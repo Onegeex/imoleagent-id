@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "author": "Imole",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd",
+      "top": -150,
+      "left": 140,
+      "attrs": {
+        "pins": "i2c"
+      }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay",
+      "top": 60,
+      "left": 220,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledOn",
+      "top": 160,
+      "left": 190,
+      "attrs": {
+        "color": "green",
+        "label": "Power"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledOff",
+      "top": 160,
+      "left": 240,
+      "attrs": {
+        "color": "red",
+        "label": "No credit"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 220,
+      "left": 180,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 220,
+      "left": 230,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "bulb",
+      "top": 40,
+      "left": 380,
+      "attrs": {
+        "color": "yellow",
+        "label": "Load (bulb)"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 120,
+      "left": 380,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot",
+      "top": 170,
+      "left": -130,
+      "attrs": {
+        "value": "60"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "potlabel",
+      "top": 250,
+      "left": -150,
+      "attrs": {
+        "text": "Load 0-100 W"
+      }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "net",
+      "top": -40,
+      "left": -90,
+      "attrs": {
+        "value": "1"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "netlabel",
+      "top": -70,
+      "left": -140,
+      "attrs": {
+        "text": "Internet on / off"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "lcd:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "lcd:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "lcd:SDA",
+      "esp:21",
+      "green",
+      []
+    ],
+    [
+      "lcd:SCL",
+      "esp:22",
+      "blue",
+      []
+    ],
+    [
+      "relay:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "relay:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "relay:IN",
+      "esp:26",
+      "orange",
+      []
+    ],
+    [
+      "esp:2",
+      "r1:1",
+      "green",
+      []
+    ],
+    [
+      "r1:2",
+      "ledOn:A",
+      "green",
+      []
+    ],
+    [
+      "ledOn:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:4",
+      "r2:1",
+      "red",
+      []
+    ],
+    [
+      "r2:2",
+      "ledOff:A",
+      "red",
+      []
+    ],
+    [
+      "ledOff:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:3V3",
+      "relay:COM",
+      "red",
+      []
+    ],
+    [
+      "relay:NO",
+      "r3:1",
+      "yellow",
+      []
+    ],
+    [
+      "r3:2",
+      "bulb:A",
+      "yellow",
+      []
+    ],
+    [
+      "bulb:C",
+      "esp:GND.3",
+      "black",
+      []
+    ],
+    [
+      "pot:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "pot:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pot:SIG",
+      "esp:34",
+      "purple",
+      []
+    ],
+    [
+      "net:2",
+      "esp:15",
+      "purple",
+      []
+    ],
+    [
+      "net:1",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ],
+  "dependencies": {}
+}
