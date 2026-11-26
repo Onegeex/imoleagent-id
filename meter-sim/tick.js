@@ -19,10 +19,14 @@ const ABI = [
   "event Credited(bytes32 indexed meterId,address indexed payer,string handle,uint256 usdtAmount,uint256 wh,bool sponsored)",
 ];
 
-if (!process.env.DEVICE_KEY || !process.env.RELAYER_KEY) throw new Error("DEVICE_KEY and RELAYER_KEY are required");
+// Keys pasted into CI secrets often pick up spaces/newlines or lose the 0x: normalise them.
+const normKey = (k) => { k = String(k || "").replace(/\s+/g, ""); return k.startsWith("0x") ? k : "0x" + k; };
+const DEVICE_KEY = normKey(process.env.DEVICE_KEY), RELAYER_KEY = normKey(process.env.RELAYER_KEY);
+for (const [n, k] of [["DEVICE_KEY", DEVICE_KEY], ["RELAYER_KEY", RELAYER_KEY]])
+  if (!/^0x[0-9a-fA-F]{64}$/.test(k)) throw new Error(`${n} must be 64 hex characters (got ${k.length - 2} after cleanup)`);
 const provider = await firstWorking(RPCS);
-const device = new ethers.Wallet(process.env.DEVICE_KEY);
-const relayer = new ethers.Wallet(process.env.RELAYER_KEY, provider);
+const device = new ethers.Wallet(DEVICE_KEY);
+const relayer = new ethers.Wallet(RELAYER_KEY, provider);
 const grid = new ethers.Contract(GRID, ABI, relayer);
 const meterId = ethers.id(LABEL);
 

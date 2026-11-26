@@ -7,7 +7,8 @@ LABEL=$1; TO=$2; DATA=$3
 [ -z "$DATA" ] && { echo "usage: bash imole-call.sh <label> <to> <calldata>"; exit 1; }
 
 echo "== Preview: $LABEL"
-P=$(baw contract-call preview --binanceChainId 56 --from $FROM --to $TO --value 0 --inputData $DATA --json)
+P=$(baw contract-call preview --binanceChainId 56 --from $FROM --to $TO --value 0 --inputData $DATA --json 2>&1 || true)
+if echo "$P" | grep -q NOT_LOGGED_IN; then echo "Agentic Wallet session expired. Run: baw auth signin   (scan the QR with the Binance app), then try again."; exit 1; fi
 echo "$P" | node -e '
 let j=JSON.parse(require("fs").readFileSync(0,"utf8"));
 if(!j.success){console.log("PREVIEW FAILED:",JSON.stringify(j.error));process.exit(2)}
