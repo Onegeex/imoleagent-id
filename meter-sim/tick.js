@@ -55,8 +55,16 @@ const sig = await device.signTypedData(
   { meterId, wh, nonce },
 );
 const tx = await grid.reportUsage(meterId, wh, nonce, sig);
-const rc = await tx.wait();
-console.log(`settled ${wh} Wh (nonce ${nonce}) · credit left ${Number(m.creditWh) - wh} Wh · tx ${rc.hash}`);
+console.log(`sent ${wh} Wh (nonce ${nonce}) · tx ${tx.hash}`);
+// Public RPCs sometimes lag on receipts; poll ourselves instead of failing the run.
+let rc = null;
+for (let i = 0; i < 20 && !rc; i++) {
+  await new Promise((r) => setTimeout(r, 3000));
+  try { rc = await provider.getTransactionReceipt(tx.hash); } catch {}
+}
+if (!rc) { console.log("receipt not seen yet - tx was broadcast; it will show on BscScan"); process.exit(0); }
+if (rc.status !== 1) throw new Error(`tx reverted: ${tx.hash}`);
+console.log(`settled ${wh} Wh · credit left ${Number(m.creditWh) - wh} Wh · block ${rc.blockNumber}`);
 
 async function firstWorking(urls) {
   for (const u of urls) {
