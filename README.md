@@ -8,7 +8,7 @@ Built for the **Binance Wallet × BNB Chain Agent ID Hackathon**.
 
 | | Address |
 |---|---|
-| ImoleGrid | [`0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99`](https://bscscan.com/address/0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99) |
+| ImoleGrid (verified) | [`0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99`](https://bscscan.com/address/0xcc3A2b650a904a64AfDcD6a3319056AAC8BBcc99#code) |
 | Agent ID registry (SPACE ID) | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
 | USDT (BSC-USD) | `0x55d398326f99059fF775485246999027B3197955` |
 | Pilot meter `imole:ife-001` | `0x8585db12c1df78cc5d76e7bcdb56e3f44262e21844fe0cb640b399c4a42045e4`, bound to **onegeex.ai** |
@@ -41,6 +41,8 @@ Agent ID is the core of the contract, not a login button:
 - No QR or pairing-code login on any website, no stored wallet sessions, no key collection. All writes go through the user's own agent and the official `baw` preview and confirmation.
 - Sponsorship is a gift of energy. There is no token, no yield and no promised return.
 - Names resolve only to a meter for payment, never to balances or history.
+
+Website: **https://imole-energy.vercel.app**
 
 ## Repo layout
 
